@@ -43,16 +43,19 @@ export default async function EvidencePage({
     <div className="min-h-screen bg-void-black">
       <TopNav />
       <main className="mx-auto max-w-[1200px] px-5 pb-20 pt-10">
-        <Link href="/" className="text-[14px] text-periwinkle-glow">
-          ← Back to dashboard
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-[14px] text-periwinkle-glow transition-colors hover:text-pure-white"
+        >
+          ← Back to signals console
         </Link>
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-[36px] font-medium text-pure-white">
+          <h1 className="font-display text-[36px] font-medium leading-[1.17] text-pure-white">
             {detail.location.name}
           </h1>
           {detail.signal && <SignalBadge signal={detail.signal.signal} />}
         </div>
-        <p className="mt-2 max-w-[640px] text-[16px] text-frost">
+        <p className="mt-2 max-w-[640px] text-[16px] leading-[1.6] text-frost">
           {detail.signal?.summary ??
             'No verified incident has been reported on this route in the last 3 hours.'}
         </p>
