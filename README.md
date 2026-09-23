@@ -11,7 +11,7 @@
 
 SafeRoute transforms unstructured, informal community incident reports—including multilingual text, local slang, and Nigerian Pidgin—into verified, time-sensitive safety intelligence.
 
-Rather than making binary safety assertions (*"safe"* vs. *"unsafe"*), SafeRoute surfaces verified evidence: corroboration levels, emerging contradictions, and temporal freshness, enabling travelers and responders to make well-informed decisions.
+Rather than making binary safety assertions (_"safe"_ vs. _"unsafe"_), SafeRoute surfaces verified evidence: corroboration levels, emerging contradictions, and temporal freshness, enabling travelers and responders to make well-informed decisions.
 
 ---
 
@@ -28,15 +28,15 @@ Rather than making binary safety assertions (*"safe"* vs. *"unsafe"*), SafeRoute
 
 Safety states follow an explicit, deterministic evaluation hierarchy. A location's signal reflects the state of available evidence rather than an unverified guarantee.
 
-| Signal | State | Description |
-| :--- | :--- | :--- |
-| 🟢 | **CLEAR** | No active or unresolved incident reports within the operational time window. |
-| 🟠 | **UNVERIFIED** | An isolated incident report has been submitted without corroborating or conflicting evidence. |
-| 🟡 | **CAUTION** | Multiple reports exist with partial corroboration, conflicting details, or active dispute. |
-| 🔴 | **CONFIRMED** | Two or more independent, corroborating reports agree with zero unresolved contradictions. |
-| ⚪ | **STALE** | Active reports have exceeded the recency threshold (default: 90 minutes) without fresh confirmation. |
+| Signal | State          | Description                                                                                          |
+| :----- | :------------- | :--------------------------------------------------------------------------------------------------- |
+| 🟢     | **CLEAR**      | No active or unresolved incident reports within the operational time window.                         |
+| 🟠     | **UNVERIFIED** | An isolated incident report has been submitted without corroborating or conflicting evidence.        |
+| 🟡     | **CAUTION**    | Multiple reports exist with partial corroboration, conflicting details, or active dispute.           |
+| 🔴     | **CONFIRMED**  | Two or more independent, corroborating reports agree with zero unresolved contradictions.            |
+| ⚪     | **STALE**      | Active reports have exceeded the recency threshold (default: 90 minutes) without fresh confirmation. |
 
-*Precedence Hierarchy:* `STALE` > `CONFIRMED` > `CAUTION` > `UNVERIFIED` > `CLEAR`.
+_Precedence Hierarchy:_ `STALE` > `CONFIRMED` > `CAUTION` > `UNVERIFIED` > `CLEAR`.
 
 ---
 
@@ -134,11 +134,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 
 ## API Reference
 
-| Endpoint | Method | Description |
-| :--- | :--- | :--- |
-| `/api/reports` | `POST` | Ingests a raw report, executes entity extraction, runs pairwise comparisons, and updates the location's signal state. |
-| `/api/incidents` | `GET` | Fetches the current computed safety signals across all registered locations. |
-| `/api/incidents/[locationId]` | `GET` | Retrieves detailed incident evidence for a location, including source reports, pairwise relations, and computation rationale. |
+| Endpoint                      | Method | Description                                                                                                                   |
+| :---------------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `/api/reports`                | `POST` | Ingests a raw report, executes entity extraction, runs pairwise comparisons, and updates the location's signal state.         |
+| `/api/incidents`              | `GET`  | Fetches the current computed safety signals across all registered locations.                                                  |
+| `/api/incidents/[locationId]` | `GET`  | Retrieves detailed incident evidence for a location, including source reports, pairwise relations, and computation rationale. |
 
 ---
 

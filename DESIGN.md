@@ -1,4 +1,5 @@
 # SafeRoute — Style Reference
+
 > Midnight SRE console
 
 **Theme:** dark
@@ -9,22 +10,23 @@ SafeRoute operates as a midnight SRE console: a near-black canvas with monochrom
 
 ## Tokens — Colors
 
-| Name | Value | Token | Role |
-|------|-------|-------|------|
-| Void Black | `#0f101a` | `--color-void-black` | Page canvas, nav background, link backgrounds |
-| Carbon Surface | `#151621` | `--color-carbon-surface` | Card surfaces, primary button background — one step above the canvas |
-| Gunmetal | `#1f2433` | `--color-gunmetal` | Input borders, elevated card borders, subtle surface lift |
-| Steel Border | `#939db8` | `--color-steel-border` | Primary hairline border, icon outlines, nav borders — the workhorse border that defines most shapes |
-| Muted Steel | `#646e87` | `--color-muted-steel` | Secondary text, subdued borders, inactive nav items |
-| Frost | `#c9d3ee` | `--color-frost` | Active nav text, icon strokes, light-on-dark headings |
-| Pure White | `#ffffff` | `--color-pure-white` | Primary heading text, body text emphasis, button text |
-| Deep Ink | `#000000` | `--color-deep-ink` | SVG icon fills, shadow anchor for inset highlights |
-| Iris Blue | `linear-gradient(353deg, rgb(91, 99, 211) 17.51%, rgb(124, 135, 247) 183.08%)` | `--color-iris-blue` | Supporting palette color for small decorative accents when the core palette needs contrast. Do not promote it to the primary CTA color |
-| Periwinkle Glow | `#98a4f7` | `--color-periwinkle-glow` | Link color, gradient end stop, accent borders — the only chromatic UI color |
+| Name            | Value                                                                          | Token                     | Role                                                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------ | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Void Black      | `#0f101a`                                                                      | `--color-void-black`      | Page canvas, nav background, link backgrounds                                                                                          |
+| Carbon Surface  | `#151621`                                                                      | `--color-carbon-surface`  | Card surfaces, primary button background — one step above the canvas                                                                   |
+| Gunmetal        | `#1f2433`                                                                      | `--color-gunmetal`        | Input borders, elevated card borders, subtle surface lift                                                                              |
+| Steel Border    | `#939db8`                                                                      | `--color-steel-border`    | Primary hairline border, icon outlines, nav borders — the workhorse border that defines most shapes                                    |
+| Muted Steel     | `#646e87`                                                                      | `--color-muted-steel`     | Secondary text, subdued borders, inactive nav items                                                                                    |
+| Frost           | `#c9d3ee`                                                                      | `--color-frost`           | Active nav text, icon strokes, light-on-dark headings                                                                                  |
+| Pure White      | `#ffffff`                                                                      | `--color-pure-white`      | Primary heading text, body text emphasis, button text                                                                                  |
+| Deep Ink        | `#000000`                                                                      | `--color-deep-ink`        | SVG icon fills, shadow anchor for inset highlights                                                                                     |
+| Iris Blue       | `linear-gradient(353deg, rgb(91, 99, 211) 17.51%, rgb(124, 135, 247) 183.08%)` | `--color-iris-blue`       | Supporting palette color for small decorative accents when the core palette needs contrast. Do not promote it to the primary CTA color |
+| Periwinkle Glow | `#98a4f7`                                                                      | `--color-periwinkle-glow` | Link color, gradient end stop, accent borders — the only chromatic UI color                                                            |
 
 ## Tokens — Typography
 
 ### Helvetica Now Text — Body text, navigation, buttons, inputs, card content, links, icons · `--font-helvetica-now-text`
+
 - **Substitute:** Inter
 - **Weights:** 400, 500, 700
 - **Sizes:** 10, 12, 13, 14, 16, 20, 28, 36px
@@ -34,6 +36,7 @@ SafeRoute operates as a midnight SRE console: a near-black canvas with monochrom
 - **Role:** Body text, navigation, buttons, inputs, card content, links, icons
 
 ### Helvetica Now Display — Hero and section headlines · `--font-helvetica-now-display`
+
 - **Substitute:** Inter Display
 - **Weights:** 500, 700
 - **Sizes:** 40, 53px
@@ -44,16 +47,16 @@ SafeRoute operates as a midnight SRE console: a near-black canvas with monochrom
 
 ### Type Scale
 
-| Role | Family | Weight | Size | Line Height | Letter Spacing | Token |
-|------|--------|--------|------|-------------|----------------|-------|
-| caption | — | — | 10px | 1.55 | -0.1px | `--text-caption` |
-| body-sm | — | — | 14px | 1.55 | -0.14px | `--text-body-sm` |
-| body | — | — | 16px | 1.6 | -0.16px | `--text-body` |
-| subheading | — | — | 20px | 1.45 | -0.2px | `--text-subheading` |
-| heading-sm | — | — | 28px | 1.45 | -0.28px | `--text-heading-sm` |
-| heading | — | — | 36px | 1.17 | -0.36px | `--text-heading` |
-| heading-lg | — | — | 40px | 1.1 | -0.4px | `--text-heading-lg` |
-| display | — | — | 53px | 1.08 | -0.53px | `--text-display` |
+| Role       | Family | Weight | Size | Line Height | Letter Spacing | Token               |
+| ---------- | ------ | ------ | ---- | ----------- | -------------- | ------------------- |
+| caption    | —      | —      | 10px | 1.55        | -0.1px         | `--text-caption`    |
+| body-sm    | —      | —      | 14px | 1.55        | -0.14px        | `--text-body-sm`    |
+| body       | —      | —      | 16px | 1.6         | -0.16px        | `--text-body`       |
+| subheading | —      | —      | 20px | 1.45        | -0.2px         | `--text-subheading` |
+| heading-sm | —      | —      | 28px | 1.45        | -0.28px        | `--text-heading-sm` |
+| heading    | —      | —      | 36px | 1.17        | -0.36px        | `--text-heading`    |
+| heading-lg | —      | —      | 40px | 1.1         | -0.4px         | `--text-heading-lg` |
+| display    | —      | —      | 53px | 1.08        | -0.53px        | `--text-display`    |
 
 ## Tokens — Spacing & Shapes
 
@@ -63,37 +66,37 @@ SafeRoute operates as a midnight SRE console: a near-black canvas with monochrom
 
 ### Spacing Scale
 
-| Name | Value | Token |
-|------|-------|-------|
-| 4 | 4px | `--spacing-4` |
-| 8 | 8px | `--spacing-8` |
-| 12 | 12px | `--spacing-12` |
-| 16 | 16px | `--spacing-16` |
-| 20 | 20px | `--spacing-20` |
-| 24 | 24px | `--spacing-24` |
-| 28 | 28px | `--spacing-28` |
-| 36 | 36px | `--spacing-36` |
-| 40 | 40px | `--spacing-40` |
-| 44 | 44px | `--spacing-44` |
-| 48 | 48px | `--spacing-48` |
-| 56 | 56px | `--spacing-56` |
-| 128 | 128px | `--spacing-128` |
-| 164 | 164px | `--spacing-164` |
-| 192 | 192px | `--spacing-192` |
+| Name | Value | Token           |
+| ---- | ----- | --------------- |
+| 4    | 4px   | `--spacing-4`   |
+| 8    | 8px   | `--spacing-8`   |
+| 12   | 12px  | `--spacing-12`  |
+| 16   | 16px  | `--spacing-16`  |
+| 20   | 20px  | `--spacing-20`  |
+| 24   | 24px  | `--spacing-24`  |
+| 28   | 28px  | `--spacing-28`  |
+| 36   | 36px  | `--spacing-36`  |
+| 40   | 40px  | `--spacing-40`  |
+| 44   | 44px  | `--spacing-44`  |
+| 48   | 48px  | `--spacing-48`  |
+| 56   | 56px  | `--spacing-56`  |
+| 128  | 128px | `--spacing-128` |
+| 164  | 164px | `--spacing-164` |
+| 192  | 192px | `--spacing-192` |
 
 ### Border Radius
 
-| Element | Value |
-|---------|-------|
-| nav | 10px |
-| cards | 16px |
-| inputs | 10px |
+| Element | Value  |
+| ------- | ------ |
+| nav     | 10px   |
+| cards   | 16px   |
+| inputs  | 10px   |
 | buttons | 9999px |
 
 ### Shadows
 
-| Name | Value | Token |
-|------|-------|-------|
+| Name   | Value                                             | Token             |
+| ------ | ------------------------------------------------- | ----------------- |
 | subtle | `rgba(255, 255, 255, 0.25) 0px 1px 3px 0px inset` | `--shadow-subtle` |
 
 ### Layout
@@ -106,56 +109,67 @@ SafeRoute operates as a midnight SRE console: a near-black canvas with monochrom
 ## Components
 
 ### Primary CTA Button (Gradient)
+
 **Role:** Main call-to-action — sign up, start for free
 
 Pill shape (9999px radius). Background: linear-gradient(353deg, #5b63d3 17.51%, #7c87f7 183.08%). Text: white, Helvetica Now Text 16px weight 500. Padding: 8px 20px. No border. White text. This is the only gradient element in the UI — it earns the right to be chromatic by being the conversion point.
 
 ### Ghost/Outlined Button
+
 **Role:** Secondary actions — explore pricing, explore AI SRE
 
 Pill shape (9999px radius). Transparent background, 1px border in #939db8 or #262935. Text: #c9d3ee or #ffffff, Helvetica Now Text 14-16px weight 500. Padding: 8px 20px. Often paired with a chevron/arrow icon.
 
 ### Email Input Field
+
 **Role:** Hero lead capture
 
 Background: #0f101a (canvas, not surface — sits as a well). Border: 1px #1f2433. Radius: 10px. Padding: 12px 20px. Placeholder text in #646e87. Helvetica Now Text 16px weight 400. Pairs with a gradient CTA button to its right.
 
 ### Comparison Card
+
 **Role:** Pricing/feature comparison panel (the 'At a fraction of your current costs' section)
 
 Background: #151621. Border: 1px #1f2433. Radius: 16px. Padding: 20-24px internal. Contains 3-column metric headers (1 TB, 1 TB, 1 TB), pricing rows, and a fine-print footnote in 12px #646e87. The card creates a floating data table feel.
 
 ### Testimonial Card
+
 **Role:** Social proof tiles in the grid
 
 Background: #151621. Border: 1px #1f2433. Radius: 16px. Padding: 20px. Contains quoted text (Helvetica Now Text 14-16px), a handle in #98a4f7, a display name, an avatar circle, and a small periwinkle checkmark icon.
 
 ### Top Navigation Bar
+
 **Role:** Primary site navigation
 
 Background: #0f101a (canvas, transparent over page). Height: ~56px. Horizontal layout with logo left, nav links center (Platform, Documentation, Pricing, Community, Company, Enterprise), Sign In and gradient Sign Up button right. Subtle inset white highlight at the top edge (rgba(255,255,255,0.25) 0 1px 3px inset) creates a hairline divider from the page.
 
 ### Logo Trust Bar
+
 **Role:** Social proof below hero
 
 Horizontal row of partner/customer logos (NordVPN, UNICEF, Canada, Decathlon, Raycast, Ametek). Logos are monochrome #939db8 or #646e87, no color, evenly spaced with ~40-60px gaps. No background, no border — sits directly on the dark canvas.
 
 ### Product Screenshot Showcase
+
 **Role:** Hero visual — dashboard mockup
 
 Large dark product UI mockup with internal panels showing observability charts (area charts in muted periwinkle, line graphs, KPI cards). The screenshot itself acts as a visual element, floating on the canvas with no frame or shadow.
 
 ### Section Heading Block
+
 **Role:** Section titles (e.g., 'Don't just take our word for it')
 
 Centered text block. Heading: Helvetica Now Display 40px weight 500, white. Subtext: Helvetica Now Text 16-20px weight 400, #c9d3ee or #646e87. Max-width contained, centered. Often followed by a carousel/grid of cards below.
 
 ### Metric Stat Block
+
 **Role:** Key statistics in feature sections (80x more data, 98% lower costs)
 
 Large number in Helvetica Now Display 40-53px weight 500, white. Label below in 14-16px weight 400, #c9d3ee. Left-aligned within a two-column layout, tight 4-8px gap between number and label.
 
 ### Navigation Dropdown Item
+
 **Role:** Dropdown menu items under Platform/Community nav links
 
 Background: #151621. Border: 1px #1f2433. Radius: 16px. Padding: 16-20px. Contains small icon + label pairs. Text in #ffffff or #c9d3ee.
@@ -163,6 +177,7 @@ Background: #151621. Border: 1px #1f2433. Radius: 16px. Padding: 16-20px. Contai
 ## Do's and Don'ts
 
 ### Do
+
 - Use #939db8 as the default border color for cards, inputs, and dividers — it's the structural border of the system
 - Use the violet-blue gradient (linear-gradient(353deg, #5b63d3, #7c87f7)) exclusively for the primary CTA — one gradient, one job
 - Apply the inset white highlight (rgba(255,255,255,0.25) 0 1px 3px inset) to nav and filled buttons for a 1px top rim-light
@@ -172,6 +187,7 @@ Background: #151621. Border: 1px #1f2433. Radius: 16px. Padding: 16-20px. Contai
 - Define depth through surface tones (#0f101a → #151621 → #1f2433), not drop shadows
 
 ### Don't
+
 - Don't use drop shadows for elevation — the system uses inset highlights and surface contrast only
 - Don't use the periwinkle (#98a4f7) as a filled button background — it belongs to links and gradient stops
 - Don't use weight 700 for body or nav text — 500 is the maximum for UI; 700 is reserved for emphasis only
@@ -182,11 +198,11 @@ Background: #151621. Border: 1px #1f2433. Radius: 16px. Padding: 16-20px. Contai
 
 ## Surfaces
 
-| Level | Name | Value | Purpose |
-|-------|------|-------|---------|
-| 0 | Canvas | `#0f101a` | Page background, full-bleed dark base |
-| 1 | Card Surface | `#151621` | Card bodies, comparison panels, product containers |
-| 2 | Elevated Border | `#1f2433` | Input fields, bordered card edges |
+| Level | Name            | Value     | Purpose                                            |
+| ----- | --------------- | --------- | -------------------------------------------------- |
+| 0     | Canvas          | `#0f101a` | Page background, full-bleed dark base              |
+| 1     | Card Surface    | `#151621` | Card bodies, comparison panels, product containers |
+| 2     | Elevated Border | `#1f2433` | Input fields, bordered card edges                  |
 
 ## Elevation
 
@@ -204,6 +220,7 @@ Max-width 1200px centered content with full-bleed dark sections. Hero is a split
 ## Agent Prompt Guide
 
 ## Quick Color Reference
+
 - Text primary: #ffffff
 - Text secondary: #c9d3ee
 - Text muted: #646e87
@@ -248,12 +265,20 @@ Max-width 1200px centered content with full-bleed dark sections. Hero is a split
   --color-pure-white: #ffffff;
   --color-deep-ink: #000000;
   --color-iris-blue: #5b63d3;
-  --gradient-iris-blue: linear-gradient(353deg, rgb(91, 99, 211) 17.51%, rgb(124, 135, 247) 183.08%);
+  --gradient-iris-blue: linear-gradient(
+    353deg,
+    rgb(91, 99, 211) 17.51%,
+    rgb(124, 135, 247) 183.08%
+  );
   --color-periwinkle-glow: #98a4f7;
 
   /* Typography — Font Families */
-  --font-helvetica-now-text: 'Helvetica Now Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-helvetica-now-display: 'Helvetica Now Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-helvetica-now-text:
+    'Helvetica Now Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, sans-serif;
+  --font-helvetica-now-display:
+    'Helvetica Now Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
 
   /* Typography — Scale */
   --text-caption: 10px;
@@ -351,8 +376,12 @@ Max-width 1200px centered content with full-bleed dark sections. Hero is a split
   --color-periwinkle-glow: #98a4f7;
 
   /* Typography */
-  --font-helvetica-now-text: 'Helvetica Now Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-helvetica-now-display: 'Helvetica Now Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-helvetica-now-text:
+    'Helvetica Now Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, sans-serif;
+  --font-helvetica-now-display:
+    'Helvetica Now Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
 
   /* Typography — Scale */
   --text-caption: 10px;
