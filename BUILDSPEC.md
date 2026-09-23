@@ -16,6 +16,7 @@ It intentionally does not declare an area unconditionally "safe." Instead, it re
 has been documented, degree of corroboration, contradiction indicators, and report recency.
 
 ### Core Capabilities (MVP)
+
 - Report submission interface (unstructured text + location string + optional category)
 - LLM-powered structured extraction from natural language (location, incident type, confidence, temporal markers)
 - Pairwise comparison against active reports within a rolling time window to detect corroboration or contradiction
@@ -25,6 +26,7 @@ has been documented, degree of corroboration, contradiction indicators, and repo
 - Baseline scenario seed dataset providing realistic multi-report corroboration flows out of the box
 
 ### Explicitly Deferred Scope
+
 - User account authentication & RBAC (reports are currently anonymous, attributed by display name)
 - Interactive GIS/mapping visualization (location is modeled via managed string identifiers; no PostGIS/lat-long clustering yet)
 - Dynamic route navigation or detour calculation
@@ -40,7 +42,7 @@ has been documented, degree of corroboration, contradiction indicators, and repo
 
 1. **Dashboard Discovery:** A user accesses the dashboard and views active incident feeds per location, showing real-time signal indicators derived from verified reports.
 2. **Evidence Inspection:** The user selects "View Evidence" on a location to inspect constituent reports, relative timestamps, and plain-language corroboration/contradiction rationales.
-3. **Report Submission:** A community member submits a new report (e.g., *"road don clear for Oke-Odo now"* or *"traffic moving freely"*).
+3. **Report Submission:** A community member submits a new report (e.g., _"road don clear for Oke-Odo now"_ or _"traffic moving freely"_).
 4. **Pipeline Execution:** The backend processes the report:
    - Extracts structured metadata.
    - Compares the report against existing reports within the corroboration window.
@@ -53,16 +55,18 @@ has been documented, degree of corroboration, contradiction indicators, and repo
 
 Signals are strictly deterministic and evaluated by application code, never delegated to an LLM.
 
-| Signal | State | Evaluation Criteria |
-|---|---|---|
-| 🟢 | **CLEAR** | No active reports in the rolling window, or all recent reports confirm normal conditions |
-| 🟡 | **CAUTION** | Active reports exist with partial corroboration but contain contradictions or dispute |
-| 🟠 | **UNVERIFIED** | A single isolated report exists with no corroboration or contradiction |
-| 🔴 | **CONFIRMED** | Two or more independent, mutually corroborating reports with no unresolved contradictions within the window |
-| ⚪ | **STALE** | Most recent incident report exceeds the staleness threshold (default: 90 minutes) |
+| Signal | State          | Evaluation Criteria                                                                                         |
+| ------ | -------------- | ----------------------------------------------------------------------------------------------------------- |
+| 🟢     | **CLEAR**      | No active reports in the rolling window, or all recent reports confirm normal conditions                    |
+| 🟡     | **CAUTION**    | Active reports exist with partial corroboration but contain contradictions or dispute                       |
+| 🟠     | **UNVERIFIED** | A single isolated report exists with no corroboration or contradiction                                      |
+| 🔴     | **CONFIRMED**  | Two or more independent, mutually corroborating reports with no unresolved contradictions within the window |
+| ⚪     | **STALE**      | Most recent incident report exceeds the staleness threshold (default: 90 minutes)                           |
 
 ### Precedence Hierarchy
+
 When multiple condition branches match, precedence is strictly evaluated in order:
+
 1. **STALE** (evaluated first based on recency of the latest report)
 2. **CONFIRMED**
 3. **CAUTION**
@@ -125,6 +129,7 @@ create table report_relations (
 ```
 
 ### Initial Data Seeding
+
 Initial seed configurations include baseline locations (`Oke-Odo Junction`, `Market Road`, `Ile-Ogbo Junction`) and sample report timelines with pre-calculated relations to verify and demonstrate system behavior upon deployment.
 
 ---
@@ -132,9 +137,11 @@ Initial seed configurations include baseline locations (`Oke-Odo Junction`, `Mar
 ## 5. API Contracts (Next.js App Router)
 
 ### `POST /api/reports`
+
 Ingests a new community report.
 
 - **Request Body:**
+
   ```json
   {
     "raw_text": "Road block at Oke-Odo junction",
@@ -155,12 +162,15 @@ Ingests a new community report.
 - **Response:** Created report entity and updated `incident_signals` payload.
 
 ### `GET /api/incidents`
+
 Returns active incident signals across all monitored locations, sorted by `updated_at desc`. Powers the primary dashboard feed.
 
 ### `GET /api/incidents/[locationId]`
+
 Returns detailed incident signal state for a specific location along with all associated reports and pairwise relations within the window. Powers the evidence inspection interface.
 
 ### `POST /api/seed`
+
 Administrative/development endpoint to seed or reset initial locations and sample report histories. Gated in production environments.
 
 ---
@@ -170,6 +180,7 @@ Administrative/development endpoint to seed or reset initial locations and sampl
 LLM interactions utilize the Google Gemini API (e.g., `gemini-2.5-flash` via `@google/genai` SDK or REST API). The architecture enforces decoupled, single-responsibility calls:
 
 ### 6.1 Structured Extraction (`lib/extraction.ts`)
+
 Converts raw unstructured text into typed incident attributes. Runs once per report.
 
 - **Output Contract:**
@@ -187,6 +198,7 @@ Converts raw unstructured text into typed incident attributes. Runs once per rep
   - Defensive response parsing with JSON extraction fallbacks.
 
 ### 6.2 Pairwise Comparison (`lib/comparison.ts`)
+
 Analyzes two reports regarding the same location to identify semantic consistency.
 
 - **Output Contract:**
@@ -199,6 +211,7 @@ Analyzes two reports regarding the same location to identify semantic consistenc
 - Evaluated pairwise between new incoming reports and existing active reports.
 
 ### 6.3 Deterministic Signal Computation (`lib/signal.ts`)
+
 Signal generation is implemented as a pure, deterministic TypeScript function:
 
 ```typescript
@@ -221,6 +234,7 @@ export function computeSignal(
 ```
 
 **Configuration Constants:**
+
 - `CORROBORATION_WINDOW`: 3 hours
 - `STALENESS_THRESHOLD`: 90 minutes from newest relevant report
 
@@ -241,7 +255,7 @@ export function computeSignal(
 
 - **String-Based Location Registry:** Location resolution uses normalized string indexing against known locations. Unmatched locations automatically register as new entities. Full geospatial clustering (PostGIS) is planned for future milestones.
 - **Anonymous Community Submissions:** Current version supports open reporting with client-provided source labels. Production roadmaps include tiered verification and reputation metrics.
-- **Strict Evidence Transparency:** The system operates as an evidence aggregator, not a prescriptive authority. System copy maintains non-prescriptive phrasing (e.g., *"No verified incident reported in the last 30 minutes"* rather than *"This route is safe"*).
+- **Strict Evidence Transparency:** The system operates as an evidence aggregator, not a prescriptive authority. System copy maintains non-prescriptive phrasing (e.g., _"No verified incident reported in the last 30 minutes"_ rather than _"This route is safe"_).
 
 ---
 

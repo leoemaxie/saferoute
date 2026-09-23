@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Coverage and testing
+coverage/
+
+# Misc & OS files
+.DS_Store
+*.pem
+
+# Environment files
+.env*
+
+# Vercel
+.vercel/
+
+# TypeScript cache
+*.tsbuildinfo
+next-env.d.ts
+
+# Package lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

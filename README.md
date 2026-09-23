@@ -52,13 +52,13 @@ why the system reached that conclusion.
 The system never asserts a location is safe. It reports the state of the
 evidence:
 
-- Not: *"This road is safe."*
-- Instead: *"No verified incident has been reported on this route in the
-  last 30 minutes."*
+- Not: _"This road is safe."_
+- Instead: _"No verified incident has been reported on this route in the
+  last 30 minutes."_
 
-- Not: *"There is an attack at Oke-Odo."*
-- Instead: *"Three recent reports describe an incident around Oke-Odo.
-  The claim has not been officially confirmed."*
+- Not: _"There is an attack at Oke-Odo."_
+- Instead: _"Three recent reports describe an incident around Oke-Odo.
+  The claim has not been officially confirmed."_
 
 This distinction is enforced in both the signal-computation logic and the
 UI copy, not left to a language model's discretion at render time.
@@ -107,13 +107,13 @@ outputs by fixed rules, so it is reproducible and auditable.
 
 ## Signal States
 
-| Signal | Label | Meaning |
-|---|---|---|
-| 🟢 | CLEAR | No unresolved reports for this location in the active window |
-| 🟠 | UNVERIFIED | A single report exists with no corroboration and no contradiction |
-| 🟡 | CAUTION | Reports are partially corroborated, or at least one contradicts another |
-| 🔴 | CONFIRMED | Two or more independent, mutually consistent reports, no contradictions, within the corroboration window |
-| ⚪ | STALE | The most recent relevant report is older than the staleness threshold |
+| Signal | Label      | Meaning                                                                                                  |
+| ------ | ---------- | -------------------------------------------------------------------------------------------------------- |
+| 🟢     | CLEAR      | No unresolved reports for this location in the active window                                             |
+| 🟠     | UNVERIFIED | A single report exists with no corroboration and no contradiction                                        |
+| 🟡     | CAUTION    | Reports are partially corroborated, or at least one contradicts another                                  |
+| 🔴     | CONFIRMED  | Two or more independent, mutually consistent reports, no contradictions, within the corroboration window |
+| ⚪     | STALE      | The most recent relevant report is older than the staleness threshold                                    |
 
 ## Data Model
 
@@ -134,11 +134,11 @@ Full schema definitions are in [`BUILDSPEC.md`](./BUILDSPEC.md).
 
 ## API
 
-| Method | Route | Purpose |
-|---|---|---|
-| `POST` | `/api/reports` | Submit a report; runs extraction, comparison, and signal recomputation |
-| `GET` | `/api/incidents` | List current signals for all locations |
-| `GET` | `/api/incidents/[locationId]` | Full evidence detail for one location: reports, relations, and the current signal |
+| Method | Route                         | Purpose                                                                           |
+| ------ | ----------------------------- | --------------------------------------------------------------------------------- |
+| `POST` | `/api/reports`                | Submit a report; runs extraction, comparison, and signal recomputation            |
+| `GET`  | `/api/incidents`              | List current signals for all locations                                            |
+| `GET`  | `/api/incidents/[locationId]` | Full evidence detail for one location: reports, relations, and the current signal |
 
 ## Getting Started
 

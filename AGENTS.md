@@ -33,6 +33,48 @@ This file defines architecture constraints, operational boundaries, and developm
    introduce unprompted geocoders, GIS extensions (PostGIS), or vector embedding pipelines until
    explicitly scheduled in milestone roadmaps.
 
+## Engineering Standards & Code Conventions
+
+### 1. Component Architecture & Reusability
+
+- **Small, Reusable Components:** Build modular, reusable components with clear single responsibilities.
+- **Strict Size Limit:** Keep component file size strictly under **150 lines of code (LOC)**. If a component grows near or past 150 LOC, decompose it into smaller subcomponents, custom hooks, or utility helpers.
+- **Separation of Concerns:** Separate presentation, stateful logic (custom hooks), and data access. Keep JSX clean and declarative.
+
+### 2. Thoughtful File Naming & Organization
+
+- **Descriptive & Consistent:** Use clear, expressive file names matching the module's domain responsibility (e.g., `incident-card.tsx`, `use-signal-feed.ts`, `signal-evaluator.ts`).
+- **Standard Conventions:**
+  - Component files and directories: `kebab-case.tsx` (or PascalCase where convention dictates, standardizing on lowercase `kebab-case` for file system safety across platforms).
+  - Utility and library files: `kebab-case.ts`.
+  - API routes: follow Next.js App Router conventions (`route.ts`, `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`).
+- **Co-location:** Co-locate component-specific subcomponents, types, and hooks within appropriate domain or UI directories rather than dumping all into root folders.
+
+### 3. Vendor Agnostic Abstractions (Strict Prohibition of Vendored Names)
+
+- **Prohibit Vendored Identifiers:** Never expose external vendor names or brand names in business logic functions, domain types, component names, or domain classes.
+  - ❌ **Prohibited:** `getResponseFromGemini()`, `class ResendEmail`, `callOpenAiApi()`, `SupabaseIncidentRepository`
+  - ✅ **Required:** `extractIncidentEntities()`, `sendNotificationEmail()`, `compareIncidentReports()`, `IncidentRepository`
+- **Rationale:** Third-party providers are implementation details that may change. Domain interfaces and calling code must remain decoupled from specific vendors through clean adapter/service boundaries.
+
+### 4. Next.js Best Practices & Pitfalls to Avoid
+
+- **Server vs. Client Components:**
+  - Default to React Server Components (RSC). Only mark components with `'use client'` when browser APIs, event listeners, or React hooks (`useState`, `useEffect`) are genuinely required.
+  - Keep client boundaries as leaves in the component tree to maximize server rendering benefits and minimize client JS bundles.
+  - **Pitfall:** Do not pass complex non-serializable objects or functions across Server/Client Component boundaries.
+- **Route Handlers & Secrets:**
+  - Secure API handlers: Never expose server secrets (`SUPABASE_SERVICE_ROLE_KEY`, `GEMINI_API_KEY`) to client bundles or in responses.
+  - Always validate incoming request payloads before processing (e.g., via Zod or strict type guards).
+  - Always return standard JSON error responses with appropriate HTTP status codes (400 for bad input, 500 for unhandled exceptions).
+- **Data Fetching & Caching Pitfalls:**
+  - Be explicit about caching behaviors. Avoid unintentional aggressive caching for dynamic incident reports and signals.
+  - In dynamic routes requiring fresh data, ensure dynamic rendering options or `revalidate` flags are explicitly configured.
+- **Hydration Mismatches:**
+  - Avoid rendering date/time strings directly on both server and client without formatting guards, as timezone differences cause hydration mismatches. Use standard formatting helpers or suppress hydration when displaying localized dynamic dates.
+- **Async Pitfalls & Unhandled Rejections:**
+  - Ensure all database calls and LLM pipelines are awaited with structured `try/catch` error blocks. Unhandled async exceptions in App Router handlers can crash or hang requests.
+
 ## Recommended Build Sequence
 
 Implement components in this dependency order:
