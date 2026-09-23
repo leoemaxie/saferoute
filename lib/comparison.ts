@@ -16,7 +16,7 @@ export class ComparisonError extends Error {
   }
 }
 
-const MODEL_ID = 'gemini-2.5-flash';
+const MODEL_ID = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
 const TIMEOUT_MS = 20_000;
 
 function tokenize(text: string): Set<string> {

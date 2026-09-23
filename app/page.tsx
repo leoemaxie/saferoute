@@ -15,7 +15,7 @@ export default function DashboardPage() {
               What has been reported, and how much to trust it.
             </h1>
             <p className="mt-4 max-w-[520px] text-[16px] leading-[1.6] text-frost md:text-[20px] md:leading-[1.45]">
-              SafeRoute turns community reports into transparent signals with visible evidence —
+              SafeRoute turns community reports into transparent signals with visible evidence,
               corroboration, contradiction, and recency. It never declares a route safe.
             </p>
           </div>

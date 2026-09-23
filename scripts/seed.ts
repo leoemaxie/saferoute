@@ -1,7 +1,7 @@
 // Idempotent baseline seed. Usage: pnpm seed
 // Requires Supabase server env vars; runs the real comparison pipeline
 // so seeding also validates end-to-end execution.
-import { loadEnvConfig } from 'next/env';
+import { loadEnvConfig } from '@next/env';
 import { runSeed } from '../lib/seed';
 
 loadEnvConfig(process.cwd());

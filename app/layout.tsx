@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SafeRoute — Community Safety Signals',
+  title: 'SafeRoute: Community Safety Signals',
   description:
     'Transparent, time-sensitive safety intelligence from community reports. Evidence, corroboration, and recency — never unverified safety claims.',
   manifest: '/manifest.json',
