@@ -1,267 +1,176 @@
 # SafeRoute
 
-AI-powered community incident verification and route intelligence.
+> AI-assisted community incident verification and deterministic route intelligence.
 
-[![Next.js](https://img.shields.io/badge/Next.js-14%2B-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![Google Gemini](https://img.shields.io/badge/Google-Gemini_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
-[![pnpm](https://img.shields.io/badge/pnpm-9.x-orange?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15%2B-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](LICENSE)
 
-SafeRoute converts scattered, informal incident reports into transparent,
-time-sensitive safety signals. Rather than declaring a location "safe" or
-"unsafe," it shows what has been reported, how corroborated the reports
-are, whether they contradict one another, and how recent the information
-is — so the person reading it can judge how much to trust it.
+SafeRoute transforms unstructured, informal community incident reports—including multilingual text, local slang, and Nigerian Pidgin—into verified, time-sensitive safety intelligence.
 
-## Table of Contents
+Rather than making binary safety assertions (*"safe"* vs. *"unsafe"*), SafeRoute surfaces verified evidence: corroboration levels, emerging contradictions, and temporal freshness, enabling travelers and responders to make well-informed decisions.
 
-- [Overview](#overview)
-- [Core Principle](#core-principle)
-- [Architecture](#architecture)
-- [Signal States](#signal-states)
-- [Data Model](#data-model)
-- [API](#api)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [Seeding Initial Data](#seeding-initial-data)
-- [Project Structure](#project-structure)
-- [Known Limitations](#known-limitations)
-- [Roadmap](#roadmap)
-- [License](#license)
+---
 
-## Overview
+## Key Highlights
 
-A community member submits a report in natural language, including
-informal English or Nigerian Pidgin:
+- **Nuanced Natural Language Extraction:** Ingests unformatted, colloquial reports and extracts structured entities (location, incident classification, temporal anchors, confidence scores).
+- **Pairwise Report Comparison:** Compares incoming claims against active local reports to surface mutual corroboration or conflicting accounts.
+- **Deterministic Signal Evaluation:** Safety signals are computed strictly through pure, auditable TypeScript rule sets—never delegated to an LLM runtime.
+- **Transparent Evidence View:** Every computed state is accompanied by a transparent audit trail showing underlying reports, timestamps, and pairwise reasoning.
 
-> "Dem block road for Oke-Odo junction."
+---
 
-SafeRoute extracts structured information from the report (location,
-incident type, confidence), compares it against other recent reports at
-the same location, and computes a signal that reflects the current state
-of the evidence — corroborated, contradicted, unverified, confirmed, or
-stale. Every signal is paired with an evidence view explaining exactly
-why the system reached that conclusion.
+## Signal Evaluation Matrix
 
-## Core Principle
+Safety states follow an explicit, deterministic evaluation hierarchy. A location's signal reflects the state of available evidence rather than an unverified guarantee.
 
-The system never asserts a location is safe. It reports the state of the
-evidence:
+| Signal | State | Description |
+| :--- | :--- | :--- |
+| 🟢 | **CLEAR** | No active or unresolved incident reports within the operational time window. |
+| 🟠 | **UNVERIFIED** | An isolated incident report has been submitted without corroborating or conflicting evidence. |
+| 🟡 | **CAUTION** | Multiple reports exist with partial corroboration, conflicting details, or active dispute. |
+| 🔴 | **CONFIRMED** | Two or more independent, corroborating reports agree with zero unresolved contradictions. |
+| ⚪ | **STALE** | Active reports have exceeded the recency threshold (default: 90 minutes) without fresh confirmation. |
 
-- Not: _"This road is safe."_
-- Instead: _"No verified incident has been reported on this route in the
-  last 30 minutes."_
+*Precedence Hierarchy:* `STALE` > `CONFIRMED` > `CAUTION` > `UNVERIFIED` > `CLEAR`.
 
-- Not: _"There is an attack at Oke-Odo."_
-- Instead: _"Three recent reports describe an incident around Oke-Odo.
-  The claim has not been officially confirmed."_
+---
 
-This distinction is enforced in both the signal-computation logic and the
-UI copy, not left to a language model's discretion at render time.
-
-## Architecture
+## System Architecture
 
 ```
-┌─────────────┐      ┌──────────────────┐      ┌─────────────────┐
-│   Frontend   │─────▶│   API Routes      │─────▶│   Supabase       │
-│  Next.js/    │      │  (Next.js App     │      │  (Postgres)      │
-│  React       │◀─────│   Router)         │◀─────│                  │
-└─────────────┘      └──────────────────┘      └─────────────────┘
-                              │
-                              ▼
-                      ┌──────────────────┐
-                      │   LLM API         │
-                      │  (extraction +    │
-                      │   comparison)     │
-                      └──────────────────┘
+┌─────────────────────────────────┐
+│     Next.js Client (React)      │
+│  Incident Dashboard & Evidence  │
+└────────────────┬────────────────┘
+                 │ HTTP / REST
+                 ▼
+┌─────────────────────────────────┐       ┌────────────────────────┐
+│     Next.js App Router API      │──────▶│   LLM Service API      │
+│  - Ingestion & Validation       │       │  - Entity Extraction   │
+│  - Pairwise Comparison Flow     │◀──────│  - Pairwise Comparison │
+│  - Deterministic Evaluation     │       └────────────────────────┘
+└────────────────┬────────────────┘
+                 │ Read / Write
+                 ▼
+┌─────────────────────────────────┐
+│     Supabase / PostgreSQL       │
+│  locations, reports, relations, │
+│  and computed incident signals  │
+└─────────────────────────────────┘
 ```
 
-Report processing pipeline:
+---
 
-```
-Raw report
-    │
-    ▼
-Information extraction (LLM)        → structured fields
-    │
-    ▼
-Pairwise comparison vs. recent       → corroboration / contradiction
-reports at same location (LLM)         relations, per pair
-    │
-    ▼
-Signal computation (deterministic)   → one of five signal states
-    │
-    ▼
-Incident feed + evidence view
-```
+## Quickstart
 
-Signal computation is implemented as plain, deterministic, unit-tested
-code — not an LLM call. The language model is used where judgment about
-unstructured text is genuinely required (extraction, similarity,
-contradiction detection); the final signal state is derived from those
-outputs by fixed rules, so it is reproducible and auditable.
-
-## Signal States
-
-| Signal | Label      | Meaning                                                                                                  |
-| ------ | ---------- | -------------------------------------------------------------------------------------------------------- |
-| 🟢     | CLEAR      | No unresolved reports for this location in the active window                                             |
-| 🟠     | UNVERIFIED | A single report exists with no corroboration and no contradiction                                        |
-| 🟡     | CAUTION    | Reports are partially corroborated, or at least one contradicts another                                  |
-| 🔴     | CONFIRMED  | Two or more independent, mutually consistent reports, no contradictions, within the corroboration window |
-| ⚪     | STALE      | The most recent relevant report is older than the staleness threshold                                    |
-
-## Data Model
-
-Core tables (Postgres, via Supabase):
-
-- **`locations`** — a controlled set of named locations reports resolve
-  against.
-- **`reports`** — one row per submitted report, including both the raw
-  text and the AI-extracted structured fields.
-- **`incident_signals`** — the current computed signal per location, kept
-  as a cache that can always be rebuilt from `reports` and
-  `report_relations`.
-- **`report_relations`** — pairwise corroboration/contradiction judgments
-  between reports, with a short rationale, used to render the evidence
-  view.
-
-Full schema definitions are in [`BUILDSPEC.md`](./BUILDSPEC.md).
-
-## API
-
-| Method | Route                         | Purpose                                                                           |
-| ------ | ----------------------------- | --------------------------------------------------------------------------------- |
-| `POST` | `/api/reports`                | Submit a report; runs extraction, comparison, and signal recomputation            |
-| `GET`  | `/api/incidents`              | List current signals for all locations                                            |
-| `GET`  | `/api/incidents/[locationId]` | Full evidence detail for one location: reports, relations, and the current signal |
-
-## Getting Started
+Follow these steps to set up and run the SafeRoute application locally.
 
 ### Prerequisites
 
-- Node.js 20+
-- A Supabase project
-- A Google Gemini API key
+- **Node.js:** v20.x or higher
+- **pnpm:** v9.x or higher
+- **Supabase Account:** Managed project or local instance
+- **Gemini API Key:** For server-side entity extraction and report comparison
 
-### Installation
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/leoemaxie/saferoute
+git clone https://github.com/leoemaxie/saferoute.git
 cd saferoute
+```
+
+### 2. Install Dependencies
+
+```bash
 pnpm install
 ```
 
-### Configure environment variables
+### 3. Configure Environment Variables
 
-Copy the example file and fill in your own values:
+Create a `.env.local` file from the example template:
 
 ```bash
 cp .env.example .env.local
 ```
 
-See [Environment Variables](#environment-variables) below for what each
-value is and where to find it.
+Populate the required credentials:
 
-### Set up the database
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
+SUPABASE_SECRET_KEY=your-supabase-service-role-key
 
-Run the schema from `BUILDSPEC.md` (Section: Data Model) against your
-Supabase project, either via the Supabase SQL editor or the CLI:
+# LLM API
+GEMINI_API_KEY=your-gemini-api-key
+```
+
+> **Security Note:** `SUPABASE_SECRET_KEY` and `GEMINI_API_KEY` are used exclusively in server-side route handlers and are never exposed to client bundles.
+
+### 4. Apply Database Migrations
+
+Apply the database schema to your Supabase project:
 
 ```bash
 supabase db push
 ```
 
-### Run locally
+Alternatively, execute the migration scripts located in `supabase/migrations/` using the Supabase SQL Editor.
+
+### 5. Run the Development Server
 
 ```bash
 pnpm dev
 ```
 
-The app runs at `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## Environment Variables
+---
 
-```
-NEXT_PUBLIC_SUPABASE_URL=             # Supabase project URL
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY= # Supabase publishable key
-SUPABASE_SECRET_KEY=                  # Supabase secret key — server-side only, used for writes in API routes
-GEMINI_API_KEY=                       # Google Gemini API key — server-side only
-```
+## API Reference
 
-The LLM API key is never referenced in client-side code. Extraction and
-comparison calls happen exclusively inside server-side API route
-handlers.
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/api/reports` | `POST` | Ingests a raw report, executes entity extraction, runs pairwise comparisons, and updates the location's signal state. |
+| `/api/incidents` | `GET` | Fetches the current computed safety signals across all registered locations. |
+| `/api/incidents/[locationId]` | `GET` | Retrieves detailed incident evidence for a location, including source reports, pairwise relations, and computation rationale. |
 
-## Seeding Initial Data
+---
 
-A seed script populates a representative initial dataset: multiple reports
-arriving in sequence around a single location, showing the signal shift
-as new, sometimes contradictory information arrives.
+## Development & Testing
 
 ```bash
-pnpm seed
+# Run lint checks
+pnpm lint
+
+# Format code with Prettier
+pnpm format
+
+# Build for production
+pnpm build
 ```
 
-This is idempotent and safe to re-run to reset the initial state.
+---
 
-## Project Structure
+## Design Principles & Limitations
 
-```
-app/
-  api/
-    reports/route.ts           # POST /api/reports
-    incidents/route.ts         # GET /api/incidents
-    incidents/[locationId]/route.ts
-  (dashboard)/page.tsx          # incident feed
-  incident/[locationId]/page.tsx  # evidence view
-lib/
-  signal.ts                     # deterministic signal computation
-  extraction.ts                 # LLM extraction call
-  comparison.ts                 # LLM comparison call
-  supabase.ts                   # Supabase client setup
-scripts/
-  seed.ts
-BUILDSPEC.md                    # full technical specification
-```
+- **Evidence Over Assertion:** The platform does not declare roads safe; it accurately describes the recency and corroboration level of incoming data.
+- **Normalized Location Resolution:** In the current phase, locations are resolved against a managed dictionary using normalized string matching rather than complex geospatial indexing (PostGIS).
+- **Separation of LLM and Decision Logic:** Language models parse messy user prose and detect semantic contradictions; business logic and safety states are determined entirely by deterministic rules.
 
-## Known Limitations
+---
 
-These are deliberate scope boundaries for the current version, not
-oversights:
+## Contributing
 
-- **Location matching is exact/normalized string matching** against a
-  small controlled table, not geocoding. A misspelled or unrecognized
-  location will create a new, disconnected entry rather than merging
-  with an existing one.
-- **No authentication.** Report submission is anonymous. The Supabase
-  row-level security policy is intentionally permissive for the publishable
-  key, reflecting the current scope rather than a production-ready
-  access model.
-- **Corroboration and staleness windows are fixed constants** (3 hours
-  and 90 minutes respectively), not tuned against real-world incident
-  dynamics.
-- **Pairwise LLM comparison**, not an embeddings-based similarity index.
-  Appropriate at current data volumes; would need revisiting at scale.
+Contributions are welcome! Please ensure that any PR maintains the strict separation between LLM extraction and deterministic signal evaluation. Code changes should pass `pnpm lint` and `pnpm build` prior to submission.
 
-## Roadmap
-
-Near-term directions, in rough priority order:
-
-1. Real geocoding and geospatial clustering (PostGIS) in place of
-   string-matched locations.
-2. Trusted-source reputation, so repeat, verified reporters carry more
-   weight in signal computation.
-3. WhatsApp ingestion, so reports can be submitted from the channel
-   people already use.
-4. Embedding-based similarity search to replace pairwise comparison as
-   report volume grows.
-5. Authenticated reporting with lightweight identity verification.
+---
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+This project is open-source software licensed under the [Apache License 2.0](LICENSE).
