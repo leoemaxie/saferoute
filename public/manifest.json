@@ -1,0 +1,16 @@
+{
+  "name": "SafeRoute",
+  "short_name": "SafeRoute",
+  "description": "AI-assisted community incident verification and deterministic route intelligence.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f101a",
+  "theme_color": "#0f101a",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

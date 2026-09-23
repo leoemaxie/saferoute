@@ -9,6 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "seed": "tsx scripts/seed.ts",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
   "dependencies": {

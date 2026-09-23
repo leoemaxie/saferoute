@@ -1,14 +1,12 @@
 import Link from 'next/link';
+import { Logo } from '@/components/logo';
 
 export function TopNav() {
   return (
     <header className="sticky top-0 z-50 border-b border-gunmetal bg-void-black/95 backdrop-blur nav-inset-highlight">
       <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-5">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-periwinkle-glow" />
-          <span className="font-display text-[16px] font-medium tracking-[-0.01em] text-pure-white">
-            SafeRoute
-          </span>
+        <Link href="/" aria-label="SafeRoute Home">
+          <Logo />
         </Link>
         <nav className="hidden items-center gap-6 text-[14px] text-frost sm:flex">
           <Link href="/" className="transition-colors hover:text-pure-white">
