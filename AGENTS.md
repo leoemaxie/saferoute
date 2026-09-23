@@ -12,23 +12,27 @@ This file defines architecture constraints, operational boundaries, and developm
    ambiguous or silent on a design point, implement the minimal reasonable solution, document
    the rationale in your pull request / commit description, and proceed.
 
-2. **Scope Discipline.**
+2. **UI Implementation Must Follow `DESIGN.md`.**
+   All UI, styling, component design, visual hierarchy, theme tokens, typography, and layout work
+   must strictly conform to the specifications and design system tokens in `DESIGN.md`.
+
+3. **Scope Discipline.**
    Focus strictly on core requirements specified in `BUILDSPEC.md` Section 1. Avoid premature
    abstractions or unrequested features. If an optimization or feature is outside current milestones,
    document it with a concise `// TODO:` comment or include it in the roadmap.
 
-3. **Deterministic Signal Computation (No LLM in Evaluation Loop).**
+4. **Deterministic Signal Computation (No LLM in Evaluation Loop).**
    As specified in `BUILDSPEC.md` Section 6.3, signal computation is deterministic code, not an
    LLM prompt. Never delegate the safety signal state evaluation to an LLM; all evaluation
    belongs in `lib/signal.ts` as pure, testable TypeScript functions.
 
-4. **Fault-Tolerant AI Pipeline (No Lost Reports).**
+5. **Fault-Tolerant AI Pipeline (No Lost Reports).**
    Every pipeline step interacting with external LLM APIs (extraction, comparison) must handle
    network failures, timeouts, and JSON parsing errors gracefully. On error, mark the record
    `status = 'error'` and persist the raw submission. An unparsed or partially processed report
    can be reprocessed or reviewed; dropped data cannot.
 
-5. **Strict Scope Boundaries (Location & Geocoding).**
+6. **Strict Scope Boundaries (Location & Geocoding).**
    Location matching uses normalized string matching against a managed locations table. Do not
    introduce unprompted geocoders, GIS extensions (PostGIS), or vector embedding pipelines until
    explicitly scheduled in milestone roadmaps.
