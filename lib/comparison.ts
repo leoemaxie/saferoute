@@ -106,11 +106,23 @@ export async function compareIncidentReports(
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return heuristicComparison(reportAText, reportBText);
 
-  const prompt = [
-    'Compare two community incident reports about the same location.',
-    'Decide whether report B corroborates, contradicts, or is unrelated to report A.',
-    'Handle Nigerian Pidgin and colloquial phrasing.',
-    'Respond with JSON only: {"relation": "corroborates"|"contradicts"|"unrelated", "rationale": "one concise user-facing sentence"}.',
+  const systemInstruction = [
+    'You compare two independent community incident reports regarding the same vicinity to assess their semantic relationship.',
+    'Handle Nigerian Pidgin, code-switched text, and colloquial phrasing.',
+    '',
+    'CATEGORIES:',
+    '- "corroborates": Both reports describe the same event/disruption, OR both confirm calm/cleared conditions.',
+    '- "contradicts": One report claims an active disruption or hazard, while the other claims the road is calm/clear/reopened.',
+    '- "unrelated": The reports describe completely distinct incidents, different locations, or one report is an unverified question/chatter.',
+    '',
+    'NON-PRESCRIPTIVE RATIONALE RULE:',
+    '- Output exactly ONE concise, objective sentence explaining the relationship.',
+    '- NEVER declare a road "safe", "secure", or give prescriptive travel instructions (system rule: evidence aggregator, not authority).',
+    '- Example: "Both reports describe heavy vehicular obstruction near the junction."',
+    '- Output valid JSON: {"relation": "corroborates"|"contradicts"|"unrelated", "rationale": "string"}',
+  ].join('\n');
+
+  const contents = [
     `Report A: """${reportAText.trim()}"""`,
     `Report B: """${reportBText.trim()}"""`,
   ].join('\n');
@@ -118,7 +130,15 @@ export async function compareIncidentReports(
   try {
     const client = new GoogleGenAI({ apiKey });
     const response = await Promise.race([
-      client.models.generateContent({ model: MODEL_ID, contents: prompt }),
+      client.models.generateContent({
+        model: MODEL_ID,
+        contents,
+        config: {
+          systemInstruction,
+          temperature: 0.1,
+          responseMimeType: 'application/json',
+        },
+      }),
       new Promise<never>((_, reject) =>
         setTimeout(() => reject(new ComparisonError('Model request timed out')), TIMEOUT_MS)
       ),

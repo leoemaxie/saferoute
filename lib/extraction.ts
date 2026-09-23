@@ -105,16 +105,22 @@ export async function extractIncidentEntities(rawText: string): Promise<Extracti
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return heuristicExtraction(text);
 
-  const prompt = [
-    'Extract structured incident fields from a community safety report.',
-    'The report may be in English, Nigerian Pidgin, or code-switched text.',
-    'Zero-hallucination policy: if a field is not present in the input, return null for it.',
-    'incident_type must be one of: "road_disruption", "security_concern", "all_clear", or null.',
-    'confidence is "low" | "medium" | "high" for the extraction itself.',
-    'event_time_reference is the raw temporal phrase (e.g. "just now", "10 mins ago") or null.',
-    'Respond with JSON only, no markdown, no commentary.',
-    `Report: """${text}"""`,
-    'Schema: {"location": string|null, "incident_type": string|null, "confidence": "low"|"medium"|"high", "event_time_reference": string|null}',
+  const systemInstruction = [
+    'You are a strict, objective information extraction engine for community safety reports in Nigeria.',
+    'Your role is to extract factual attributes without making assumptions or hallucinating.',
+    '',
+    'STRICT RULES:',
+    '1. INQUIRIES & QUESTIONS: If a report asks a question (e.g. "Road clear for Oke-Odo?", "Any update?"), seeks info, or is casual conversation/greetings/prayers, return all null fields with confidence "low":',
+    '   {"location": null, "incident_type": null, "confidence": "low", "event_time_reference": null}',
+    '2. INCIDENT TYPES:',
+    '   - "road_disruption": Physical blockages, heavy traffic/go-slow, vehicle breakdown, accidents, floods, road repairs.',
+    '   - "security_concern": Armed robbery, violence, gunfire, extortion checkpoints, protests/riots, harassment.',
+    '   - "all_clear": Reports explicitly confirming free flow, normal movement, or calm ("everywhere calm/soft", "road don open", "dey move normal", "no wahala").',
+    '   - null: Ambiguous text, non-incidents, or general chatter.',
+    '3. LOCATION: Extract ONLY the specific location where the incident occurred. Do NOT extract transit origins or destinations. If not mentioned, return null.',
+    '4. TEMPORAL PHRASE: Extract the exact raw time mention (e.g. "just now", "10 mins ago", "this morning"). Return null if absent.',
+    '5. CONFIDENCE: "high" if direct eyewitness report; "medium" if plausible but brief; "low" if uncertain, rumor, or question.',
+    '6. Output valid JSON matching schema: {"location": string|null, "incident_type": string|null, "confidence": "low"|"medium"|"high", "event_time_reference": string|null}',
   ].join('\n');
 
   try {
@@ -122,7 +128,12 @@ export async function extractIncidentEntities(rawText: string): Promise<Extracti
     const withTimeout = Promise.race([
       client.models.generateContent({
         model: MODEL_ID,
-        contents: prompt,
+        contents: `Report: """${text}"""`,
+        config: {
+          systemInstruction,
+          temperature: 0.1,
+          responseMimeType: 'application/json',
+        },
       }),
       new Promise<never>((_, reject) =>
         setTimeout(() => reject(new ExtractionError('Model request timed out')), TIMEOUT_MS)
