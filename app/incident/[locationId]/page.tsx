@@ -3,21 +3,9 @@ import { notFound } from 'next/navigation';
 import { EvidenceReport } from '@/components/evidence-report';
 import { SignalBadge } from '@/components/signal-badge';
 import { TopNav } from '@/components/top-nav';
-import type { EvidenceDetail } from '@/lib/types';
+import { getEvidence } from '@/lib/evidence';
 
 export const dynamic = 'force-dynamic';
-
-async function loadEvidence(locationId: string): Promise<EvidenceDetail | null> {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
-  const res = await fetch(`${base}/api/incidents/${locationId}`, {
-    cache: 'no-store',
-  });
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error('Failed to load evidence');
-  return (await res.json()) as EvidenceDetail;
-}
 
 export default async function EvidencePage({
   params,
@@ -25,7 +13,7 @@ export default async function EvidencePage({
   params: Promise<{ locationId: string }>;
 }) {
   const { locationId } = await params;
-  const detail = await loadEvidence(locationId);
+  const detail = await getEvidence(locationId);
   if (!detail) notFound();
 
   const peers = new Map(detail.reports.map((r) => [r.id, r.raw_text]));
