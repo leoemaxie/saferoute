@@ -36,11 +36,11 @@ export function SignalFeed() {
   }
   if (error) {
     return (
-      <div className="rounded-2xl border border-gunmetal bg-carbon-surface p-5">
+      <div className="rounded-[16px] border border-gunmetal bg-carbon-surface p-6">
         <p className="text-[14px] text-frost">Could not load signals: {error}</p>
         <button
           onClick={load}
-          className="mt-2 rounded-full border border-steel-border px-4 py-1 text-[14px] text-frost"
+          className="btn-ghost-action mt-3 px-4 py-1.5 text-[13px]"
         >
           Retry
         </button>
@@ -49,8 +49,8 @@ export function SignalFeed() {
   }
   if (items.length === 0) {
     return (
-      <div className="rounded-2xl border border-gunmetal bg-carbon-surface p-5">
-        <p className="text-[14px] text-frost">
+      <div className="rounded-[16px] border border-gunmetal bg-carbon-surface p-6">
+        <p className="text-[14px] leading-[1.6] text-frost">
           No verified incident has been reported on monitored routes in the last 3 hours. Submit the
           first report below.
         </p>

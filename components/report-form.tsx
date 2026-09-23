@@ -41,10 +41,10 @@ export function ReportForm() {
     <form
       id="report"
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-gunmetal bg-carbon-surface p-5"
+      className="rounded-[16px] border border-gunmetal bg-carbon-surface p-6"
     >
-      <h2 className="text-[20px] font-medium text-pure-white">Submit a report</h2>
-      <p className="mt-1 text-[14px] text-muted-steel">
+      <h2 className="text-[20px] font-medium leading-[1.45] text-pure-white">Submit a report</h2>
+      <p className="mt-1 text-[14px] leading-[1.55] text-muted-steel">
         Plain words are fine — English, Pidgin, or mixed. Say what you saw and where.
       </p>
       <label className="mt-4 block text-[12px] font-medium text-frost">
@@ -55,7 +55,7 @@ export function ReportForm() {
           rows={3}
           maxLength={2000}
           placeholder="e.g. Dem block road for Oke-Odo junction"
-          className="mt-1 w-full rounded-[10px] border border-gunmetal bg-void-black px-4 py-3 text-[16px] text-pure-white placeholder:text-muted-steel"
+          className="mt-1.5 w-full rounded-[10px] border border-gunmetal bg-void-black px-4 py-3 text-[14px] text-pure-white placeholder:text-muted-steel focus:border-steel-border focus:outline-none"
         />
       </label>
       <label className="mt-3 block text-[12px] font-medium text-frost">
@@ -65,18 +65,24 @@ export function ReportForm() {
           onChange={(e) => setLocationRaw(e.target.value)}
           maxLength={200}
           placeholder="e.g. Oke-Odo Junction"
-          className="mt-1 w-full rounded-[10px] border border-gunmetal bg-void-black px-4 py-3 text-[16px] text-pure-white placeholder:text-muted-steel"
+          className="mt-1.5 w-full rounded-[10px] border border-gunmetal bg-void-black px-4 py-3 text-[14px] text-pure-white placeholder:text-muted-steel focus:border-steel-border focus:outline-none"
         />
       </label>
-      <button
-        type="submit"
-        disabled={state === 'sending'}
-        className="btn-primary-action mt-4 px-5 py-2 text-[14px] font-medium disabled:opacity-60"
-      >
-        {state === 'sending' ? 'Submitting…' : 'Submit report'}
-      </button>
+      <div className="mt-5 flex items-center gap-3">
+        <button
+          type="submit"
+          disabled={state === 'sending'}
+          className="btn-primary-action px-6 py-2.5 text-[14px] font-medium leading-none disabled:opacity-50"
+        >
+          {state === 'sending' ? 'Submitting…' : 'Submit report'}
+        </button>
+      </div>
       {message && (
-        <p className={`mt-2 text-[14px] ${state === 'error' ? 'text-red-300' : 'text-frost'}`}>
+        <p
+          className={`mt-3 text-[13px] leading-[1.5] ${
+            state === 'error' ? 'text-red-400' : 'text-frost'
+          }`}
+        >
           {message}
         </p>
       )}
