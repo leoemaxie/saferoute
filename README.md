@@ -2,7 +2,7 @@
 
 > AI-assisted community incident verification and deterministic route intelligence.
 
-[![Next.js](https://img.shields.io/badge/Next.js-15%2B-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16%2B-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -147,6 +147,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 ```bash
 # Run lint checks
 pnpm lint
+# Run type checks
+pnpm typecheck
 
 # Format code with Prettier
 pnpm format
