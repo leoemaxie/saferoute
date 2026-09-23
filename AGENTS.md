@@ -68,7 +68,7 @@ This file defines architecture constraints, operational boundaries, and developm
   - Keep client boundaries as leaves in the component tree to maximize server rendering benefits and minimize client JS bundles.
   - **Pitfall:** Do not pass complex non-serializable objects or functions across Server/Client Component boundaries.
 - **Route Handlers & Secrets:**
-  - Secure API handlers: Never expose server secrets (`SUPABASE_SERVICE_ROLE_KEY`, `GEMINI_API_KEY`) to client bundles or in responses.
+  - Secure API handlers: Never expose server secrets (`SUPABASE_SECRET_KEY`, `GEMINI_API_KEY`) to client bundles or in responses.
   - Always validate incoming request payloads before processing (e.g., via Zod or strict type guards).
   - Always return standard JSON error responses with appropriate HTTP status codes (400 for bad input, 500 for unhandled exceptions).
 - **Data Fetching & Caching Pitfalls:**
@@ -128,13 +128,13 @@ functions continuously to prevent contract drift.
 ## Environment Variables
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=          # Supabase project URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY=     # Supabase anonymous public key
-SUPABASE_SERVICE_ROLE_KEY=         # Supabase service role key (server-side only, for secure writes)
-GEMINI_API_KEY=                    # Google Gemini API key (server-side only)
+NEXT_PUBLIC_SUPABASE_URL=             # Supabase project URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY= # Supabase publishable key
+SUPABASE_SECRET_KEY=                  # Supabase secret key (server-side only, for secure writes)
+GEMINI_API_KEY=                       # Google Gemini API key (server-side only)
 ```
 
-> **Security Rule:** Never expose `SUPABASE_SERVICE_ROLE_KEY` or `GEMINI_API_KEY` to client bundles.
+> **Security Rule:** Never expose `SUPABASE_SECRET_KEY` or `GEMINI_API_KEY` to client bundles.
 > All LLM prompts and privileged database writes must execute inside server-side route handlers or server actions.
 
 ## Testing & Quality Assurance

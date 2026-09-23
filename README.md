@@ -151,7 +151,7 @@ Full schema definitions are in [`BUILDSPEC.md`](./BUILDSPEC.md).
 ### Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/leoemaxie/saferoute
 cd saferoute
 pnpm install
 ```
@@ -187,10 +187,10 @@ The app runs at `http://localhost:3000`.
 ## Environment Variables
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=       # Supabase project URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY=  # Supabase anon/public key
-SUPABASE_SERVICE_ROLE_KEY=      # Supabase service role key — server-side only, used for writes in API routes
-GEMINI_API_KEY=                 # Google Gemini API key — server-side only
+NEXT_PUBLIC_SUPABASE_URL=             # Supabase project URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY= # Supabase publishable key
+SUPABASE_SECRET_KEY=                  # Supabase secret key — server-side only, used for writes in API routes
+GEMINI_API_KEY=                       # Google Gemini API key — server-side only
 ```
 
 The LLM API key is never referenced in client-side code. Extraction and
@@ -239,7 +239,7 @@ oversights:
   location will create a new, disconnected entry rather than merging
   with an existing one.
 - **No authentication.** Report submission is anonymous. The Supabase
-  row-level security policy is intentionally permissive for the anon
+  row-level security policy is intentionally permissive for the publishable
   key, reflecting the current scope rather than a production-ready
   access model.
 - **Corroboration and staleness windows are fixed constants** (3 hours
